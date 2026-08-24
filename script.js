@@ -8,7 +8,7 @@ const DEFAULT_LETTER = {
 
 Noon talaga akala ko 'di kita magiging close hwhahhahaha pero noon lang pala talaga 'yon. It's kinda weird but yeah sobrang pinahanga mo 'ko sa galing mong makisama sa Wave to Earth.
 
-Sa totoo lang sobrang thankful ako na nakilala kita at naging close tayo. You are one of the most amazing people I've ever met, and I feel so lucky to have you in my life. Your kindness, humor, and positivity always reminds me to persue what i wanted.
+Sa totoo lang sobrang thankful ako na nakilala kita at naging close tayo. You are one of the most amazing people I've ever met, and I feel so lucky to have you in my life. Your kindness, humor, an[...]
 
 The moment we have that conversation that last for 7 hours, doon kita mas nakilala. Sobrang na-amaze ako sa'yo n'on kasi ang daldal mo din pala, akala ko nonchalant ka forever ehh.
 
@@ -34,7 +34,7 @@ const LINE_REVEAL_DELAY_MS  = 1100;  // ms between each line appearing (~1.1s)
 const EMPHASIS_LINE_DELAY_MS = 1600; // delay added for empty/paragraph-break lines
 
 /* 🎵 Background music — leave URL as '' for NO music */
-const MUSIC_URL = 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=soft-piano-100-bpm-121529.mp3';
+const MUSIC_URL = 'https://raw.githubusercontent.com/ChoiWillows/jhurine/main/Rob%20Deniel%20-%20Star%20Song%20(Official%20Lyric%20Video).mp3';
 const MUSIC_VOLUME = 0.45; // 0.0 (mute) → 1.0 (loud)
 
 /* =====================================================================
@@ -71,7 +71,10 @@ const MUSIC_VOLUME = 0.45; // 0.0 (mute) → 1.0 (loud)
     if (musicAudio) {
         try { musicAudio.volume = MUSIC_VOLUME; } catch (_) {}
         if (MUSIC_URL) {
-            if (musicAudio.getAttribute('src') !== MUSIC_URL) musicAudio.setAttribute('src', MUSIC_URL);
+            if (musicAudio.getAttribute('src') !== MUSIC_URL) {
+                musicAudio.setAttribute('src', MUSIC_URL);
+                musicAudio.setAttribute('crossorigin', 'anonymous');
+            }
         }
     }
 
