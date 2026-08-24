@@ -6,184 +6,113 @@
     <title>Envelope Editor 💙</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .editor-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 30px 20px;
+        .editor-container { max-width: 820px; margin: 0 auto; padding: 30px 20px; }
+        .editor-title {
+            font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 24px;
+            background: linear-gradient(135deg, #2563EB 0%, #4A90E2 50%, #C4B5FD 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
+        .tip {
+            background: linear-gradient(135deg,#FEF3C7,#FDE68A); border: 2px solid #F59E0B;
+            border-radius: 16px; padding: 16px 22px; margin-bottom: 24px;
+            box-shadow: 0 8px 25px rgba(245,158,11,0.15);
+        }
+        .tip b { color: #92400E; }
+        .tip code { background: #FFFBEB; padding: 2px 8px; border-radius: 6px; }
         .editor-card {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
             border-radius: 24px;
-            padding: 35px;
+            padding: 32px;
             box-shadow: 0 20px 50px rgba(30, 64, 175, 0.15);
             border: 2px solid rgba(168, 216, 234, 0.5);
         }
-        .editor-title {
-            font-size: 2rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #2563EB 0%, #4A90E2 50%, #C4B5FD 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .divider { text-align: center; margin: 32px 0 22px; position: relative; }
+        .divider::before, .divider::after {
+            content: ''; position: absolute; top: 50%; width: 32%;
+            height: 2px; background: linear-gradient(90deg, transparent, #A8D8EA, transparent);
         }
-        .form-group {
-            margin-bottom: 25px;
+        .divider::before { left: 0; } .divider::after { right: 0; }
+        .divider span {
+            background: linear-gradient(135deg, #E0F2FE, #DBEAFE);
+            padding: 6px 20px; border-radius: 20px;
+            font-weight: 700; color: #2563EB; font-size: 0.95rem;
         }
-        .form-label {
-            display: block;
-            font-weight: 700;
-            color: #1E40AF;
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-        .form-label .hint {
-            font-weight: 400;
-            color: #64748B;
-            font-size: 0.85rem;
-        }
-        .form-input, .form-textarea {
-            width: 100%;
-            padding: 14px 18px;
-            font-size: 1rem;
-            border: 2px solid #B9E0FF;
-            border-radius: 14px;
+        .fg { margin-bottom: 22px; }
+        .fl { display: block; font-weight: 700; color: #1E40AF; margin-bottom: 8px; }
+        .fl .hint { font-weight: 400; color: #64748B; font-size: 0.85rem; }
+        .fi, .fta {
+            width: 100%; padding: 14px 18px; font-size: 1rem;
+            border: 2px solid #B9E0FF; border-radius: 14px;
             background: linear-gradient(135deg, #F0F9FF 0%, #FFFFFF 100%);
-            transition: all 0.3s ease;
-            color: #1E40AF;
-            font-family: inherit;
-            outline: none;
+            transition: all 0.3s ease; color: #1E40AF; font-family: inherit; outline: none;
         }
-        .form-input:focus, .form-textarea:focus {
-            border-color: #4A90E2;
+        .fi:focus, .fta:focus {
+            border-color: #4A90E2; background: #fff;
             box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.15);
-            background: #FFFFFF;
         }
-        .form-textarea {
-            resize: vertical;
-            min-height: 200px;
-            line-height: 1.7;
-        }
-        .preview-section {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px dashed #A8D8EA;
-        }
-        .preview-box {
+        .fta { resize: vertical; min-height: 220px; line-height: 1.7; }
+        .preview-section { margin-top: 22px; padding-top: 22px; border-top: 2px dashed #A8D8EA; }
+        .pbox {
             background: linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 100%);
-            border-radius: 16px;
-            padding: 25px;
-            border: 2px solid #DBEAFE;
-            min-height: 300px;
+            border-radius: 16px; padding: 22px; border: 2px solid #DBEAFE; min-height: 280px;
         }
-        .preview-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2563EB;
-            text-align: center;
-            padding-bottom: 12px;
-            border-bottom: 2px dashed #B9E0FF;
-            margin-bottom: 15px;
+        .pt {
+            font-size: 1.4rem; font-weight: 700; color: #2563EB; text-align: center;
+            padding-bottom: 12px; border-bottom: 2px dashed #B9E0FF; margin-bottom: 12px;
         }
-        .preview-body {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #334155;
-            white-space: pre-wrap;
-            margin-bottom: 15px;
+        .pb { font-size: 1rem; line-height: 1.8; color: #334155; white-space: pre-wrap; margin-bottom: 12px; }
+        .ps {
+            text-align: right; padding-top: 12px; border-top: 2px dashed #B9E0FF;
+            color: #1E40AF; font-weight: 600;
         }
-        .preview-signature {
-            text-align: right;
-            padding-top: 12px;
-            border-top: 2px dashed #B9E0FF;
-            color: #1E40AF;
-            font-weight: 500;
+        .bg { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
+        .btn {
+            padding: 12px 24px; font-size: 1rem; font-weight: 700; border: none;
+            border-radius: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+            position: relative; overflow: hidden; transition: transform .2s ease, box-shadow .2s ease;
+            text-decoration: none;
         }
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 30px;
+        .btn-success { background: linear-gradient(135deg,#059669,#10B981); color: #fff; box-shadow: 0 8px 25px rgba(16,185,129,.4); }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(16,185,129,.5); }
+        .btn-primary { background: linear-gradient(135deg,#2563EB,#4A90E2,#87CEEB); color: #fff; box-shadow: 0 8px 25px rgba(37,99,235,.4); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 34px rgba(37,99,235,.5); }
+        .btn-back { background: linear-gradient(135deg,#C4B5FD,#B9E0FF); color: #1E40AF; box-shadow: 0 6px 20px rgba(196,181,253,.4); }
+        .btn-back:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(196,181,253,.5); }
+        .btn-danger { background: linear-gradient(135deg,#DC2626,#F87171); color: #fff; box-shadow: 0 8px 25px rgba(248,113,113,.4); }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(248,113,113,.5); }
+        .export {
+            margin-top: 24px; padding-top: 24px; border-top: 2px dashed #A8D8EA; position: relative;
         }
-        .btn-success {
-            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
-            color: white;
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        .code-wrap { position: relative; }
+        .code {
+            background: #0F172A; color: #E2E8F0; padding: 22px 72px 22px 22px; border-radius: 16px;
+            overflow-x: auto; font-size: 0.85rem; line-height: 1.7;
+            max-height: 420px; overflow-y: auto;
+            font-family: 'Fira Code', 'Cascadia Code', Consolas, 'Courier New', monospace;
+            white-space: pre;
         }
-        .btn-success:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.5);
-        }
-        .btn-back {
-            background: linear-gradient(135deg, #C4B5FD 0%, #B9E0FF 100%);
-            color: #1E40AF;
-            box-shadow: 0 6px 20px rgba(196, 181, 253, 0.4);
-        }
-        .btn-back:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(196, 181, 253, 0.5);
-        }
-        .btn-danger {
-            background: linear-gradient(135deg, #DC2626 0%, #F87171 100%);
-            color: white;
-            box-shadow: 0 8px 25px rgba(248, 113, 113, 0.4);
-        }
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(248, 113, 113, 0.5);
+        .copy-btn {
+            position: absolute; top: 14px; right: 14px;
+            padding: 8px 14px; font-size: 0.85rem;
         }
         .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 16px 24px;
-            border-radius: 14px;
-            color: white;
-            font-weight: 600;
-            z-index: 99999;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: fixed; top: 22px; right: 22px;
+            padding: 14px 22px; border-radius: 14px; color: #fff;
+            font-weight: 600; z-index: 99999;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2);
+            animation: slideIn .25s ease;
         }
-        .toast-success {
-            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
-        }
-        .toast-error {
-            background: linear-gradient(135deg, #DC2626 0%, #F87171 100%);
-        }
-        @keyframes slideIn {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        .section-divider {
-            text-align: center;
-            margin: 35px 0 25px;
-            position: relative;
-        }
-        .section-divider::before, .section-divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 35%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #A8D8EA, transparent);
-        }
-        .section-divider::before { left: 0; }
-        .section-divider::after { right: 0; }
-        .section-divider span {
-            background: linear-gradient(135deg, #E0F2FE, #DBEAFE);
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-weight: 700;
-            color: #2563EB;
-            font-size: 0.95rem;
-        }
+        .toast-success { background: linear-gradient(135deg,#059669,#10B981); }
+        .toast-error   { background: linear-gradient(135deg,#DC2626,#F87171); }
+        @keyframes slideIn { from { transform: translateX(400px); opacity: 0;} to { transform: translateX(0); opacity: 1; } }
+        .hidden { display: none !important; }
         @media (max-width: 600px) {
-            .editor-card { padding: 25px 18px; }
+            .editor-card { padding: 22px 16px; }
             .editor-title { font-size: 1.5rem; }
-            .section-divider::before, .section-divider::after { width: 25%; }
+            .divider::before, .divider::after { width: 22%; }
+            .code { padding-right: 22px; padding-top: 58px; }
+            .copy-btn { top: 14px; right: 14px; }
         }
     </style>
 </head>
@@ -201,175 +130,273 @@
     <div class="editor-container">
         <h1 class="editor-title">💙 Envelope Editor 💙</h1>
 
+        <div class="tip">
+            <div><b>💡 For your 24/7 live Vercel site:</b></div>
+            <div style="margin-top:6px;color:#78350F;line-height:1.6;">
+                Use this as a <b>visual editor</b>. When happy, click <b>"📋 Export Code"</b>,
+                then <b>paste</b> into the top of <code>script.js</code> in VS Code (replace the top 16 lines).
+                Save, then run <code>vercel --prod</code>. Done! ✨
+            </div>
+        </div>
+
         <div class="editor-card">
-            <form id="editor-form">
-                <div class="section-divider"><span>🔐 Password Settings</span></div>
+            <div class="divider"><span>🔐 Passwords</span></div>
 
-                <div class="form-group">
-                    <label class="form-label" for="envelope-password">
-                        Envelope Password <span class="hint">(for your bestie to open)</span>
-                    </label>
-                    <input type="text" id="envelope-password" class="form-input" placeholder="e.g., bestie2024" required>
+            <div class="fg">
+                <label class="fl" for="pw">Envelope Password <span class="hint">(your bestie types this)</span></label>
+                <input type="text" id="pw" class="fi" value="082510">
+            </div>
+            <div class="fg">
+                <label class="fl" for="apw">Admin Password <span class="hint">(for this editor)</span></label>
+                <input type="text" id="apw" class="fi" value="admin2024">
+            </div>
+
+            <div class="divider"><span>💌 Letter</span></div>
+
+            <div class="fg">
+                <label class="fl" for="t">Letter Title</label>
+                <input type="text" id="t" class="fi" value="To JM💙">
+            </div>
+            <div class="fg">
+                <label class="fl" for="b">Letter Body <span class="hint">(use Enter for new lines)</span></label>
+                <textarea id="b" class="fta" rows="12"></textarea>
+            </div>
+            <div class="fg">
+                <label class="fl" for="s">Your Signature</label>
+                <input type="text" id="s" class="fi" value="Marth Hale 💙">
+            </div>
+
+            <div class="divider"><span>🎚️ Speed &amp; Music</span></div>
+
+            <div class="fg">
+                <label class="fl" for="wormMs">Wormhole Duration (ms) <span class="hint">(3000 = 3s, higher = longer portal)</span></label>
+                <input type="number" id="wormMs" class="fi" min="1500" max="20000" step="100" value="5200">
+            </div>
+            <div class="fg">
+                <label class="fl" for="lineMs">Line Reveal Speed (ms) <span class="hint">(500 = fast, 1500 = slow/cinematic)</span></label>
+                <input type="number" id="lineMs" class="fi" min="250" max="6000" step="50" value="1100">
+            </div>
+            <div class="fg">
+                <label class="fl" for="gapMs">Paragraph Gap (ms) <span class="hint">(pause after empty line = new paragraph)</span></label>
+                <input type="number" id="gapMs" class="fi" min="400" max="8000" step="100" value="1600">
+            </div>
+            <div class="fg">
+                <label class="fl" for="musicUrl">Background Music URL <span class="hint">(mp3/ogg, or leave empty for none)</span></label>
+                <input type="text" id="musicUrl" class="fi" value="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=soft-piano-100-bpm-121529.mp3" placeholder="leave blank for no music">
+            </div>
+            <div class="fg">
+                <label class="fl" for="vol">Music Volume <span class="hint">(0 = muted, 1 = loudest)</span></label>
+                <input type="range" id="vol" min="0" max="1" step="0.05" value="0.45" style="width:100%;accent-color:#2563EB;">
+            </div>
+
+            <div class="preview-section">
+                <div class="divider"><span>👀 Live Preview</span></div>
+                <div class="pbox">
+                    <div class="pt" id="pvT">To JM💙</div>
+                    <div class="pb" id="pvB">Your message will appear here...</div>
+                    <div class="ps" id="pvS">Marth Hale 💙</div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="admin-password">
-                        Admin Password <span class="hint">(to access this editor)</span>
-                    </label>
-                    <input type="text" id="admin-password" class="form-input" placeholder="e.g., admin2024" required>
-                </div>
+            <div class="bg">
+                <button class="btn btn-primary" id="exportBtn">
+                    <span>📋</span> Export Code for script.js
+                </button>
+                <button class="btn btn-success" id="saveBtn">
+                    <span>💾</span> Save Locally
+                </button>
+                <button class="btn btn-danger" id="resetBtn">
+                    <span>🔄</span> Reset
+                </button>
+                <a class="btn btn-back" href="index.html">
+                    <span>🏠</span> Back to Site
+                </a>
+            </div>
 
-                <div class="section-divider"><span>💌 Letter Content</span></div>
-
-                <div class="form-group">
-                    <label class="form-label" for="letter-title">Letter Title</label>
-                    <input type="text" id="letter-title" class="form-input" placeholder="To My Bestie 💙" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="letter-body">
-                        Letter Body <span class="hint">(this is your message!)</span>
-                    </label>
-                    <textarea id="letter-body" class="form-textarea" placeholder="Write your heartfelt message here..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="letter-signature">Your Signature</label>
-                    <input type="text" id="letter-signature" class="form-input" placeholder="Love, Your Bestie 💙" required>
-                </div>
-
-                <div class="preview-section">
-                    <div class="section-divider"><span>👀 Live Preview</span></div>
-                    <div class="preview-box">
-                        <div class="preview-title" id="preview-title">To My Bestie 💙</div>
-                        <div class="preview-body" id="preview-body">Your message will appear here...</div>
-                        <div class="preview-signature" id="preview-signature">Love, Your Bestie 💙</div>
-                    </div>
-                </div>
-
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-success">
-                        <span class="btn-icon">💾</span> Save Changes
+            <div class="export hidden" id="export">
+                <div class="divider"><span>📋 Paste This Into script.js Lines 9-16</span></div>
+                <div class="code-wrap">
+                    <pre class="code" id="code"></pre>
+                    <button class="btn btn-primary copy-btn" id="copyBtn">
+                        <span>📎</span> Copy
                     </button>
-                    <button type="button" id="reset-btn" class="btn btn-danger">
-                        <span class="btn-icon">🔄</span> Reset to Default
-                    </button>
-                    <a href="index.html" class="btn btn-back">
-                        <span class="btn-icon">🏠</span> Back to Website
-                    </a>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
     <script>
-        const DEFAULT_PASSWORD = 'bestie2024';
-        const DEFAULT_ADMIN_PASSWORD = 'admin2024';
-        const DEFAULT_LETTER = {
-            title: 'To My Dearest Bestie 💙',
-            body: `Happy Happy Birthday to the most amazing person in my life! 🎉
+    (function () {
+        'use strict';
 
-From the moment we met, I knew our friendship was going to be something special. You've been there through thick and thin, laughter and tears, crazy adventures and quiet nights in. 🌟
-
-Thank you for always being you - the kind, funny, incredibly wonderful human being who makes every day brighter just by being in it. You deserve all the love, happiness, and success in the world. 🥰
-
-Here's to another year of creating unforgettable memories together! May all your dreams come true and may this year bring you everything you've been wishing for and more! 💙
-
-Never forget how special you are and how much you mean to me. I'll always be here for you, no matter what. 🫂
-
-Have the most magical birthday ever! You deserve it all! 🎂✨`,
-            signature: 'Forever & Always, Your Bestie 💙'
+        const DEFAULT = {
+            password: '082510',
+            adminPassword: 'admin2024',
+            title: 'To JM💙',
+            body: "Happy Happy Birthday brooooo! 🎉\n\nNoon talaga akala ko 'di kita magiging close hwhahhahaha pero noon lang pala talaga 'yon. It's kinda weird but yeah sobrang pinahanga mo 'ko sa galing mong makisama sa Wave to Earth.\n\nSa totoo lang sobrang thankful ako na nakilala kita at naging close tayo. You are one of the most amazing people I've ever met, and I feel so lucky to have you in my life. Your kindness, humor, and positivity always reminds me to persue what i wanted.\n\nThe moment we have that conversation that last for 7 hours, doon kita mas nakilala. Sobrang na-amaze ako sa'yo n'on kasi ang daldal mo din pala, akala ko nonchalant ka forever ehh. \n\nGumawa ako ng website yes, it took me days to make it but I hope you like it. I just want to make your birthday special and memorable.\n\nActually, kaya mo talaga 'tong ma-access sa lifetime mo unless i-delete ko. Hawak ko 'yung website kaya safe naman ito hwhahahaa. \n\nAs long as alam mo 'yung password, kaya mo 'tong balik-balikan kasi open 'to 24/7 HAHAHHAHAAHAHHA.\n\nAyun langgg, sana happy ka sa birthday mo broo kasi ako sobrang happy for you na nagagawa mo mga gusto mo. At sana mahanap mo din 'yung tamang tao para sa'yo.\n\nJoke lang, pero ang pinaka-wish ko sa'yo ay sana maabot mo na 'yung ninanais mo na with high honors at makapasa sa upcat next year! \n\nHAPPY BIRTHDAY JM!!!!!!!! MORE BIRTHDAYS TO COMEEEEE!!!! <3\n\n(blue talaga 'yung theme kasi alam kong blue 'yung favorite color mo)",
+            signature: 'Marth Hale 💙',
+            wormMs: 5200,
+            lineMs: 1100,
+            gapMs: 1600,
+            musicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=soft-piano-100-bpm-121529.mp3',
+            vol: 0.45
         };
 
-        function getStoredData() {
-            try {
-                const stored = localStorage.getItem('birthdayEnvelopeData');
-                if (stored) return JSON.parse(stored);
-            } catch (e) {}
+        const $ = (id) => document.getElementById(id);
+        const pw = $('pw'), apw = $('apw'), t = $('t'), b = $('b'), s = $('s');
+        const wormMs = $('wormMs'), lineMs = $('lineMs'), gapMs = $('gapMs'),
+              musicUrl = $('musicUrl'), vol = $('vol');
+        const pvT = $('pvT'), pvB = $('pvB'), pvS = $('pvS');
+        const exportBtn = $('exportBtn'), exportBox = $('export'), code = $('code'), copyBtn = $('copyBtn');
+        const saveBtn = $('saveBtn'), resetBtn = $('resetBtn');
+
+        b.value = DEFAULT.body;
+
+        function esc(str) {
+            return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        }
+        function escUrl(str) {
+            return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        }
+
+        function clamp(n, min, max, fallback) {
+            n = Number(n);
+            if (Number.isNaN(n)) return fallback;
+            return Math.min(max, Math.max(min, n));
+        }
+
+        function vals() {
             return {
-                password: DEFAULT_PASSWORD,
-                adminPassword: DEFAULT_ADMIN_PASSWORD,
-                letter: DEFAULT_LETTER
+                pw: pw.value.trim() || DEFAULT.password,
+                apw: apw.value.trim() || DEFAULT.adminPassword,
+                t: t.value.trim() || DEFAULT.title,
+                b: b.value || DEFAULT.body,
+                s: s.value.trim() || DEFAULT.signature,
+                wormMs: clamp(wormMs.value, 1500, 20000, DEFAULT.wormMs),
+                lineMs: clamp(lineMs.value, 250, 6000, DEFAULT.lineMs),
+                gapMs:  clamp(gapMs.value,  400, 8000, DEFAULT.gapMs),
+                musicUrl: musicUrl.value.trim(),
+                vol: clamp(vol.value, 0, 1, DEFAULT.vol)
             };
         }
 
-        function saveStoredData(data) {
-            localStorage.setItem('birthdayEnvelopeData', JSON.stringify(data));
+        function render() {
+            const v = vals();
+            pvT.textContent = v.t;
+            pvB.textContent = v.b;
+            pvS.textContent = v.s;
         }
 
-        const data = getStoredData();
-
-        const envelopePwInput = document.getElementById('envelope-password');
-        const adminPwInput = document.getElementById('admin-password');
-        const letterTitleInput = document.getElementById('letter-title');
-        const letterBodyInput = document.getElementById('letter-body');
-        const letterSignatureInput = document.getElementById('letter-signature');
-        const previewTitle = document.getElementById('preview-title');
-        const previewBody = document.getElementById('preview-body');
-        const previewSignature = document.getElementById('preview-signature');
-        const form = document.getElementById('editor-form');
-        const resetBtn = document.getElementById('reset-btn');
-
-        envelopePwInput.value = data.password;
-        adminPwInput.value = data.adminPassword;
-        letterTitleInput.value = data.letter.title;
-        letterBodyInput.value = data.letter.body;
-        letterSignatureInput.value = data.letter.signature;
-
-        function updatePreview() {
-            previewTitle.textContent = letterTitleInput.value || 'Title';
-            previewBody.textContent = letterBodyInput.value || 'Your message will appear here...';
-            previewSignature.textContent = letterSignatureInput.value || 'Your Name';
+        function buildSnippet() {
+            const v = vals();
+            const mu = v.musicUrl ? "'" + escUrl(v.musicUrl) + "'" : "''";
+            return (
+"const DEFAULT_PASSWORD     = '" + esc(v.pw) + "';\n" +
+"const DEFAULT_ADMIN_PASSWORD = '" + esc(v.apw) + "';\n" +
+"\n" +
+"const DEFAULT_LETTER = {\n" +
+"    title: '" + esc(v.t) + "',\n" +
+"    body:\n" +
+"`" + String(v.b).replace(/`/g, '\\`') + "`,\n" +
+"    signature: '" + esc(v.s) + "'\n" +
+"};\n" +
+"\n" +
+"const WORMHOLE_DURATION_MS  = " + Math.round(v.wormMs) + ";\n" +
+"const LINE_REVEAL_DELAY_MS  = " + Math.round(v.lineMs) + ";\n" +
+"const EMPHASIS_LINE_DELAY_MS = " + Math.round(v.gapMs) + ";\n" +
+"\n" +
+"const MUSIC_URL = " + mu + ";\n" +
+"const MUSIC_VOLUME = " + Number(v.vol).toFixed(2) + ";"
+            );
         }
-        updatePreview();
 
-        letterTitleInput.addEventListener('input', updatePreview);
-        letterBodyInput.addEventListener('input', updatePreview);
-        letterSignatureInput.addEventListener('input', updatePreview);
-
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.animation = 'slideIn 0.3s ease reverse';
-                setTimeout(() => toast.remove(), 300);
+        function toast(msg, type) {
+            const el = document.createElement('div');
+            el.className = 'toast toast-' + (type || 'success');
+            el.textContent = msg;
+            document.body.appendChild(el);
+            setTimeout(function () {
+                el.style.animation = 'slideIn .25s ease reverse';
+                setTimeout(function () { el.remove(); }, 260);
             }, 2500);
         }
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const newData = {
-                password: envelopePwInput.value.trim(),
-                adminPassword: adminPwInput.value.trim(),
-                letter: {
-                    title: letterTitleInput.value.trim(),
-                    body: letterBodyInput.value,
-                    signature: letterSignatureInput.value.trim()
-                }
-            };
-            saveStoredData(newData);
-            showToast('✅ Changes saved successfully!');
+        [pw, apw, t, b, s, wormMs, lineMs, gapMs, musicUrl, vol].forEach(function (el) {
+            el.addEventListener('input', render);
         });
+        render();
 
-        resetBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to reset everything to default? This cannot be undone.')) {
-                const defaultData = {
-                    password: DEFAULT_PASSWORD,
-                    adminPassword: DEFAULT_ADMIN_PASSWORD,
-                    letter: DEFAULT_LETTER
-                };
-                saveStoredData(defaultData);
-                envelopePwInput.value = DEFAULT_PASSWORD;
-                adminPwInput.value = DEFAULT_ADMIN_PASSWORD;
-                letterTitleInput.value = DEFAULT_LETTER.title;
-                letterBodyInput.value = DEFAULT_LETTER.body;
-                letterSignatureInput.value = DEFAULT_LETTER.signature;
-                updatePreview();
-                showToast('🔄 Reset to defaults!', 'error');
+        exportBtn.addEventListener('click', function () {
+            code.textContent = buildSnippet();
+            exportBox.classList.toggle('hidden');
+            if (!exportBox.classList.contains('hidden')) {
+                exportBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
+
+        copyBtn.addEventListener('click', async function () {
+            const text = buildSnippet();
+            try {
+                await navigator.clipboard.writeText(text);
+                toast('📋 Copied! Paste into script.js lines 9 to ~45, then run: vercel --prod');
+            } catch (err) {
+                try {
+                    const ta = document.createElement('textarea');
+                    ta.value = text; document.body.appendChild(ta);
+                    ta.select(); document.execCommand('copy'); ta.remove();
+                    toast('📋 Copied! Paste into script.js lines 9-45');
+                } catch (e) {
+                    toast('❌ Copy failed — manually select & copy', 'error');
+                }
+            }
+        });
+
+        saveBtn.addEventListener('click', function () {
+            const v = vals();
+            try {
+                localStorage.setItem('editorDraft', JSON.stringify(v));
+                toast('💾 Draft saved locally in this browser');
+            } catch (e) {
+                toast('❌ Could not save locally', 'error');
+            }
+        });
+
+        resetBtn.addEventListener('click', function () {
+            if (!confirm('Reset everything to defaults?')) return;
+            pw.value = DEFAULT.password;
+            apw.value = DEFAULT.adminPassword;
+            t.value = DEFAULT.title;
+            b.value = DEFAULT.body;
+            s.value = DEFAULT.signature;
+            wormMs.value = DEFAULT.wormMs;
+            lineMs.value = DEFAULT.lineMs;
+            gapMs.value  = DEFAULT.gapMs;
+            musicUrl.value = DEFAULT.musicUrl;
+            vol.value = DEFAULT.vol;
+            render();
+            toast('🔄 Reset to defaults');
+        });
+
+        try {
+            const raw = localStorage.getItem('editorDraft');
+            if (raw) {
+                const v = JSON.parse(raw);
+                if (v) {
+                    pw.value = v.pw || pw.value;
+                    apw.value = v.apw || apw.value;
+                    t.value = v.t || t.value;
+                    b.value = v.b || b.value;
+                    s.value = v.s || s.value;
+                    wormMs.value = v.wormMs || wormMs.value;
+                    lineMs.value = v.lineMs || lineMs.value;
+                    gapMs.value  = v.gapMs  || gapMs.value;
+                    if (typeof v.musicUrl === 'string') musicUrl.value = v.musicUrl;
+                    if (typeof v.vol !== 'undefined')   vol.value = v.vol;
+                    render();
+                }
+            }
+        } catch (e) {}
+    })();
     </script>
 </body>
 </html>

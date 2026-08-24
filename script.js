@@ -1,183 +1,308 @@
-const DEFAULT_PASSWORD = '082510';
-const DEFAULT_ADMIN_PASSWORD = 'admin2024';
+const DEFAULT_PASSWORD     = '082510';        // 🔐 Envelope password
+const DEFAULT_ADMIN_PASSWORD = 'admin2024';    // 🔑 Editor password
 
 const DEFAULT_LETTER = {
-    title: 'To My Dearest Bestie 💙',
-    body: `Happy Happy Birthday to the most amazing person in my life! 🎉
+    title: 'To JM💙',                         // 💌 Top header of the letter
+    body:
+`Happy Happy Birthday brooooo! 🎉
 
-From the moment we met, I knew our friendship was going to be something special. You've been there through thick and thin, laughter and tears, crazy adventures and quiet nights in. 🌟
+Noon talaga akala ko 'di kita magiging close hwhahhahaha pero noon lang pala talaga 'yon. It's kinda weird but yeah sobrang pinahanga mo 'ko sa galing mong makisama sa Wave to Earth.
 
-Thank you for always being you - the kind, funny, incredibly wonderful human being who makes every day brighter just by being in it. You deserve all the love, happiness, and success in the world. [...]
+Sa totoo lang sobrang thankful ako na nakilala kita at naging close tayo. You are one of the most amazing people I've ever met, and I feel so lucky to have you in my life. Your kindness, humor, and positivity always reminds me to persue what i wanted.
 
-Here's to another year of creating unforgettable memories together! May all your dreams come true and may this year bring you everything you've been wishing for and more! 💙
+The moment we have that conversation that last for 7 hours, doon kita mas nakilala. Sobrang na-amaze ako sa'yo n'on kasi ang daldal mo din pala, akala ko nonchalant ka forever ehh.
 
-Never forget how special you are and how much you mean to me. I'll always be here for you, no matter what. 🫂
+Gumawa ako ng website yes, it took me days to make it but I hope you like it. I just want to make your birthday special and memorable.
 
-Have the most magical birthday ever! You deserve it all! 🎂✨`,
-    signature: 'Forever & Always, Your Bestie 💙'
+Actually, kaya mo talaga 'tong ma-access sa lifetime mo unless i-delete ko. Hawak ko 'yung website kaya safe naman ito hwhahahaa.
+
+As long as alam mo 'yung password, kaya mo 'tong balik-balikan kasi open 'to 24/7 HAHAHHAHAAHAHHA.
+
+Ayun langgg, sana happy ka sa birthday mo broo kasi ako sobrang happy for you na nagagawa mo mga gusto mo. At sana mahanap mo din 'yung tamang tao para sa'yo.
+
+Joke lang, pero ang pinaka-wish ko sa'yo ay sana maabot mo na 'yung ninanais mo na with high honors at makapasa sa upcat next year!
+
+HAPPY BIRTHDAY JM!!!!!!!! MORE BIRTHDAYS TO COMEEEEE!!!! <3
+
+(blue talaga 'yung theme kasi alam kong blue 'yung favorite color mo)`,
+    signature: 'Marth Hale 💙'                 // ✍️ Your signature
 };
 
-function getStoredData() {
+/* 🎚️ Timing — tweak these if you want the reveal to go faster/slower */
+const WORMHOLE_DURATION_MS  = 5200;  // how long the portal shows before the envelope stage (5.2s)
+const LINE_REVEAL_DELAY_MS  = 1100;  // ms between each line appearing (~1.1s)
+const EMPHASIS_LINE_DELAY_MS = 1600; // delay added for empty/paragraph-break lines
+
+/* 🎵 Background music — leave URL as '' for NO music */
+const MUSIC_URL = 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=soft-piano-100-bpm-121529.mp3';
+const MUSIC_VOLUME = 0.45; // 0.0 (mute) → 1.0 (loud)
+
+/* =====================================================================
+   🛑 STOP — DO NOT EDIT BELOW THIS LINE UNLESS YOU KNOW JAVASCRIPT 🛑
+   ===================================================================== */
+
+(function () {
+    'use strict';
+
+    const $ = (id) => document.getElementById(id);
+
+    const wormhole       = $('wormhole');
+    const starsContainer = $('stars');
+    const stage          = $('stage');
+    const envelopeSec    = $('envelope-section');
+    const envelope       = $('envelope');
+    const passwordInput  = $('password-input');
+    const openBtn        = $('open-btn');
+    const togglePwBtn    = $('toggle-password');
+    const errorMsg       = $('error-msg');
+    const letterStage    = $('letter-stage');
+    const letterTitle    = $('letter-title');
+    const letterBodyWrap = $('letter-body-wrap');
+    const letterFooter   = $('letter-footer');
+    const letterSign     = $('letter-signature');
+    const celebration    = $('celebration');
+    const revealBar      = $('reveal-bar');
+    const replayBtn      = $('replay-btn');
+    const musicToggle    = $('music-toggle');
+    const musicAudio     = $('bg-music');
+
+    letterTitle.textContent = DEFAULT_LETTER.title;
+    letterSign.textContent  = DEFAULT_LETTER.signature;
+    if (musicAudio) {
+        try { musicAudio.volume = MUSIC_VOLUME; } catch (_) {}
+        if (MUSIC_URL) {
+            if (musicAudio.getAttribute('src') !== MUSIC_URL) musicAudio.setAttribute('src', MUSIC_URL);
+        }
+    }
+
+    let musicEnabled = false;
+    function setMusicUi(on) {
+        musicEnabled = on;
+        if (on) { musicToggle.textContent = '🎶'; musicToggle.classList.add('playing'); }
+        else    { musicToggle.textContent = '🎵'; musicToggle.classList.remove('playing'); }
+    }
+    function startMusic(userInitiated) {
+        if (!musicAudio || !MUSIC_URL) return;
+        const play = function () {
+            try {
+                const p = musicAudio.play();
+                if (p && typeof p.then === 'function') {
+                    p.then(() => setMusicUi(true)).catch(() => setMusicUi(false));
+                } else {
+                    setMusicUi(true);
+                }
+            } catch (_) { setMusicUi(false); }
+        };
+        if (userInitiated) { play(); return; }
+        // Non-user-initiated: browsers block autoplay. Start only after first interaction.
+        const tryOnce = function () {
+            play();
+            window.removeEventListener('pointerdown', tryOnce);
+            window.removeEventListener('keydown',     tryOnce);
+        };
+        window.addEventListener('pointerdown', tryOnce, { once: true });
+        window.addEventListener('keydown',     tryOnce, { once: true });
+    }
+    function toggleMusic() {
+        if (!musicAudio) return;
+        if (!musicEnabled) { startMusic(true); return; }
+        try { musicAudio.pause(); } catch (_) {}
+        setMusicUi(false);
+    }
+    if (musicToggle) {
+        musicToggle.addEventListener('click', function (e) {
+            e.stopPropagation(); toggleMusic();
+        });
+    }
+
+    /* --- Build wormhole stars --- */
+    function spawnStars() {
+        if (!starsContainer) return;
+        const N = 60;
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < N; i++) {
+            const s = document.createElement('div');
+            s.className = 'wormhole-star';
+            const ang = Math.random() * Math.PI * 2;
+            const dist = 500 + Math.random() * 600;
+            const dx = Math.cos(ang) * dist;
+            const dy = Math.sin(ang) * dist;
+            s.style.setProperty('--dx', dx + 'px');
+            s.style.setProperty('--dy', dy + 'px');
+            s.style.left = '50%';
+            s.style.top = '50%';
+            s.style.animationDelay = (Math.random() * 2.4) + 's';
+            s.style.animationDuration = (1.8 + Math.random() * 2.2) + 's';
+            frag.appendChild(s);
+        }
+        starsContainer.appendChild(frag);
+    }
+    spawnStars();
+
+    /* --- State machine: WORMHOLE -> ENVELOPE -> LETTER (timed reveal) --- */
+    let revealTimers = [];
+    function clearRevealTimers() { revealTimers.forEach(clearTimeout); revealTimers = []; }
+
+    function prepareLetterLines() {
+        const body = String(DEFAULT_LETTER.body || '');
+        const lines = body.split(/\r?\n/);
+        letterBodyWrap.innerHTML = '';
+        const nodes = lines.map(function (text) {
+            const d = document.createElement('div');
+            d.className = 'letter-line';
+            d.textContent = text;
+            letterBodyWrap.appendChild(d);
+            return { el: d, empty: !text || text.trim().length === 0 };
+        });
+        return nodes;
+    }
+
+    function showEnvelopeStage() {
+        wormhole.classList.add('fade-out');
+        stage.setAttribute('aria-hidden', 'false');
+        stage.classList.add('visible');
+        const t1 = setTimeout(function () { wormhole.classList.add('hidden'); }, 1400);
+        const t2 = setTimeout(function () { envelopeSec.classList.add('visible'); }, 900);
+        revealTimers.push(t1, t2);
+    }
+
+    function celebrateBurst() {
+        const emojis = ['🎉','🎊','💙','⭐','🎈','🎁','🦋','✨','💫','🌟','🥳','🌌'];
+        for (let i = 0; i < 80; i++) {
+            (function (i) {
+                const t = setTimeout(function () {
+                    const c = document.createElement('div');
+                    c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    const size = 18 + Math.random() * 22;
+                    c.style.cssText =
+                        'position:fixed;top:-60px;left:' + (Math.random() * 100) + 'vw;' +
+                        'font-size:' + size + 'px;z-index:99999;pointer-events:none;' +
+                        'animation:confettiDropAnim ' + (3.2 + Math.random() * 2.8) + 's linear forwards;';
+                    document.body.appendChild(c);
+                    setTimeout(function () { c.remove(); }, 6200);
+                }, i * 38);
+                revealTimers.push(t);
+            })(i);
+        }
+    }
+
+    function openLetterTimed() {
+        envelope.classList.add('opened');
+        envelopeSec.classList.add('gone');
+        celebrateBurst();
+        const tShow = setTimeout(function () {
+            stage.classList.add('no-pointer-events');
+            letterStage.setAttribute('aria-hidden', 'false');
+            letterStage.classList.add('active');
+            const lineInfo = prepareLetterLines();
+            let idx = 0;
+            revealBar.style.width = '0%';
+            const total = lineInfo.length;
+            const showNext = function () {
+                if (idx >= total) {
+                    const tFoo = setTimeout(function () { letterFooter.classList.add('visible'); }, 400);
+                    const tCel = setTimeout(function () { celebration.classList.add('visible'); celebrateBurst(); }, 1100);
+                    revealTimers.push(tFoo, tCel);
+                    return;
+                }
+                const cur = lineInfo[idx++];
+                cur.el.classList.add('visible');
+                revealBar.style.width = Math.round((idx / Math.max(total, 1)) * 100) + '%';
+                const delay = cur.empty ? EMPHASIS_LINE_DELAY_MS : LINE_REVEAL_DELAY_MS;
+                const tN = setTimeout(showNext, delay);
+                revealTimers.push(tN);
+            };
+            showNext();
+        }, 650);
+        revealTimers.push(tShow);
+    }
+
+    function tryOpen() {
+        const pw = (passwordInput.value || '').trim();
+        if (pw === DEFAULT_PASSWORD) {
+            errorMsg.classList.add('hidden');
+            openLetterTimed();
+        } else {
+            errorMsg.classList.remove('hidden');
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    }
+
+    openBtn.addEventListener('click', tryOpen);
+    passwordInput.addEventListener('keypress', function (e) { if (e.key === 'Enter') tryOpen(); });
+    passwordInput.addEventListener('input', function () {
+        if (!errorMsg.classList.contains('hidden')) errorMsg.classList.add('hidden');
+    });
+    togglePwBtn.addEventListener('click', function () {
+        const is = passwordInput.type === 'password';
+        passwordInput.type = is ? 'text' : 'password';
+        togglePwBtn.textContent = is ? '🙈' : '👁️';
+    });
+
+    function resetAll() {
+        clearRevealTimers();
+        if (revealBar) revealBar.style.width = '0%';
+        if (letterStage) {
+            letterStage.classList.remove('active');
+            letterStage.setAttribute('aria-hidden', 'true');
+        }
+        if (letterFooter) letterFooter.classList.remove('visible');
+        if (celebration)  celebration.classList.remove('visible');
+        if (letterBodyWrap) letterBodyWrap.innerHTML = '';
+        if (stage) {
+            stage.classList.remove('no-pointer-events');
+            stage.classList.remove('visible');
+            stage.setAttribute('aria-hidden', 'true');
+        }
+        if (envelopeSec) {
+            envelopeSec.classList.remove('visible', 'gone');
+        }
+        if (envelope) envelope.classList.remove('opened');
+        if (wormhole) {
+            wormhole.classList.remove('hidden', 'fade-out');
+        }
+        if (passwordInput) { passwordInput.value = ''; }
+        if (errorMsg) errorMsg.classList.add('hidden');
+        // Re-run the whole sequence
+        setTimeout(function () {
+            if (wormhole) wormhole.setAttribute('aria-hidden', 'false');
+            const t = setTimeout(showEnvelopeStage, WORMHOLE_DURATION_MS);
+            revealTimers.push(t);
+        }, 50);
+    }
+    if (replayBtn) replayBtn.addEventListener('click', resetAll);
+
+    /* Inject one keyframe used both by confetti bursts, so CSS is self-contained. */
     try {
-        const stored = localStorage.getItem('birthdayEnvelopeData');
-        if (stored) {
-            return JSON.parse(stored);
-        }
-    } catch (e) {
-        console.log('No stored data found, using defaults.');
+        const s = document.createElement('style');
+        s.textContent = '@keyframes confettiDropAnim{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(115vh) rotate(720deg);opacity:0}}';
+        document.head.appendChild(s);
+    } catch (_) {}
+
+    /* Start attempt for soft music (requires first user interaction due to browser autoplay policies) */
+    startMusic(false);
+
+    /* Start the show! */
+    const boot = setTimeout(showEnvelopeStage, WORMHOLE_DURATION_MS);
+    revealTimers.push(boot);
+
+    /* Admin access: #editor / #admin in URL */
+    function openEditor() {
+        const pw = prompt('🔐 Enter admin password to open the editor:');
+        if (pw === null) { if (window.history) history.replaceState(null, '', window.location.pathname); return; }
+        if (pw === DEFAULT_ADMIN_PASSWORD) { window.location.href = 'editor.html'; }
+        else { alert('❌ Wrong admin password!'); if (window.history) history.replaceState(null, '', window.location.pathname); }
     }
-    return {
-        password: DEFAULT_PASSWORD,
-        adminPassword: DEFAULT_ADMIN_PASSWORD,
-        letter: DEFAULT_LETTER
-    };
-}
+    const hash = (window.location.hash || '').toLowerCase();
+    if (hash === '#editor' || hash === '#admin') { setTimeout(openEditor, 50); }
 
-function saveStoredData(data) {
-    localStorage.setItem('birthdayEnvelopeData', JSON.stringify(data));
-}
-
-const data = getStoredData();
-
-const envelope = document.getElementById('envelope');
-const passwordInput = document.getElementById('password-input');
-const openBtn = document.getElementById('open-btn');
-const togglePasswordBtn = document.getElementById('toggle-password');
-const errorMsg = document.getElementById('error-msg');
-const envelopeSection = document.getElementById('envelope-section');
-const afterOpenSection = document.getElementById('after-open');
-const replayBtn = document.getElementById('replay-btn');
-const letterTitle = document.getElementById('letter-title');
-const letterBody = document.getElementById('letter-body');
-const letterSignature = document.getElementById('letter-signature');
-
-letterTitle.textContent = data.letter.title || DEFAULT_LETTER.title;
-letterBody.textContent = data.letter.body || DEFAULT_LETTER.body;
-letterSignature.textContent = data.letter.signature || DEFAULT_LETTER.signature;
-
-let isOpen = false;
-
-togglePasswordBtn.addEventListener('click', () => {
-    const type = passwordInput.type === 'password' ? 'text' : 'password';
-    passwordInput.type = type;
-    togglePasswordBtn.textContent = type === 'password' ? '👁️' : '🙈';
-});
-
-function openEnvelope() {
-    if (isOpen) return;
-    
-    envelope.classList.add('opened');
-    isOpen = true;
-    
-    setTimeout(() => {
-        afterOpenSection.classList.remove('hidden');
-        triggerConfetti();
-    }, 1500);
-}
-
-openBtn.addEventListener('click', () => {
-    const enteredPassword = passwordInput.value.trim();
-    
-    if (enteredPassword === data.password) {
-        errorMsg.classList.add('hidden');
-        openEnvelope();
-    } else {
-        errorMsg.classList.remove('hidden');
-        passwordInput.value = '';
-        passwordInput.focus();
-    }
-});
-
-passwordInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        openBtn.click();
-    }
-});
-
-passwordInput.addEventListener('input', () => {
-    if (!errorMsg.classList.contains('hidden')) {
-        errorMsg.classList.add('hidden');
-    }
-});
-
-replayBtn.addEventListener('click', () => {
-    isOpen = false;
-    envelope.classList.remove('opened');
-    afterOpenSection.classList.add('hidden');
-    passwordInput.value = '';
-    errorMsg.classList.add('hidden');
-    envelopeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
-
-function triggerConfetti() {
-    const emojis = ['🎉', '🎊', '💙', '⭐', '🎈', '🎁', '🦋', '✨', '💫', '🌟'];
-    for (let i = 0; i < 50; i++) {
-        setTimeout(() => {
-            const confetti = document.createElement('div');
-            confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            confetti.style.cssText = `
-                position: fixed;
-                top: -50px;
-                left: ${Math.random() * 100}vw;
-                font-size: ${20 + Math.random() * 20}px;
-                z-index: 9999;
-                pointer-events: none;
-                animation: confettiDrop ${3 + Math.random() * 2}s linear forwards;
-            `;
-            document.body.appendChild(confetti);
-            
-            setTimeout(() => confetti.remove(), 5000);
-        }, i * 50);
-    }
-}
-
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes confettiDrop {
-        0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(110vh) rotate(720deg);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
-
-const hash = window.location.hash;
-if (hash === '#editor' || hash === '#admin') {
-    showAdminPrompt();
-}
-
-function showAdminPrompt() {
-    const adminPw = prompt('🔐 Enter admin password to access the editor:');
-    if (adminPw === data.adminPassword) {
-        window.location.href = 'editor.html';
-    } else if (adminPw !== null) {
-        alert('❌ Wrong admin password!');
-        window.location.hash = '';
-    } else {
-        window.location.hash = '';
-    }
-}
-
-let konamiCode = [];
-const konamiPattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-
-document.addEventListener('keydown', (e) => {
-    konamiCode.push(e.key);
-    if (konamiCode.length > konamiPattern.length) {
-        konamiCode.shift();
-    }
-    if (konamiCode.join(',') === konamiPattern.join(',')) {
-        showAdminPrompt();
-        konamiCode = [];
-    }
-    
-    if (e.ctrlKey && e.shiftKey && e.key === 'E') {
-        e.preventDefault();
-        showAdminPrompt();
-    }
-});
+    let konami = [];
+    const pattern = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    document.addEventListener('keydown', function (e) {
+        konami.push(e.key);
+        if (konami.length > pattern.length) konami.shift();
+        if (konami.join(',') === pattern.join(',')) { konami = []; openEditor(); }
+        if (e.ctrlKey && e.shiftKey && (e.key === 'E' || e.key === 'e')) { e.preventDefault(); openEditor(); }
+    });
+})();
