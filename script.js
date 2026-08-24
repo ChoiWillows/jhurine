@@ -1,4 +1,4 @@
-const DEFAULT_PASSWORD = '082910';
+const DEFAULT_PASSWORD = '082510';
 const DEFAULT_ADMIN_PASSWORD = 'admin2024';
 
 const DEFAULT_LETTER = {
@@ -7,7 +7,7 @@ const DEFAULT_LETTER = {
 
 From the moment we met, I knew our friendship was going to be something special. You've been there through thick and thin, laughter and tears, crazy adventures and quiet nights in. 🌟
 
-Thank you for always being you - the kind, funny, incredibly wonderful human being who makes every day brighter just by being in it. You deserve all the love, happiness, and success in the world. 🥰
+Thank you for always being you - the kind, funny, incredibly wonderful human being who makes every day brighter just by being in it. You deserve all the love, happiness, and success in the world. [...]
 
 Here's to another year of creating unforgettable memories together! May all your dreams come true and may this year bring you everything you've been wishing for and more! 💙
 
