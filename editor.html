@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envelope Editor 💙</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .editor-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .editor-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(30, 64, 175, 0.15);
+            border: 2px solid rgba(168, 216, 234, 0.5);
+        }
+        .editor-title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #2563EB 0%, #4A90E2 50%, #C4B5FD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-label {
+            display: block;
+            font-weight: 700;
+            color: #1E40AF;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        .form-label .hint {
+            font-weight: 400;
+            color: #64748B;
+            font-size: 0.85rem;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: 2px solid #B9E0FF;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #F0F9FF 0%, #FFFFFF 100%);
+            transition: all 0.3s ease;
+            color: #1E40AF;
+            font-family: inherit;
+            outline: none;
+        }
+        .form-input:focus, .form-textarea:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.15);
+            background: #FFFFFF;
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 200px;
+            line-height: 1.7;
+        }
+        .preview-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px dashed #A8D8EA;
+        }
+        .preview-box {
+            background: linear-gradient(180deg, #FFFFFF 0%, #F0F9FF 100%);
+            border-radius: 16px;
+            padding: 25px;
+            border: 2px solid #DBEAFE;
+            min-height: 300px;
+        }
+        .preview-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2563EB;
+            text-align: center;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #B9E0FF;
+            margin-bottom: 15px;
+        }
+        .preview-body {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #334155;
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+        }
+        .preview-signature {
+            text-align: right;
+            padding-top: 12px;
+            border-top: 2px dashed #B9E0FF;
+            color: #1E40AF;
+            font-weight: 500;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.5);
+        }
+        .btn-back {
+            background: linear-gradient(135deg, #C4B5FD 0%, #B9E0FF 100%);
+            color: #1E40AF;
+            box-shadow: 0 6px 20px rgba(196, 181, 253, 0.4);
+        }
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(196, 181, 253, 0.5);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #DC2626 0%, #F87171 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(248, 113, 113, 0.4);
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(248, 113, 113, 0.5);
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 14px;
+            color: white;
+            font-weight: 600;
+            z-index: 99999;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .toast-success {
+            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        }
+        .toast-error {
+            background: linear-gradient(135deg, #DC2626 0%, #F87171 100%);
+        }
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .section-divider {
+            text-align: center;
+            margin: 35px 0 25px;
+            position: relative;
+        }
+        .section-divider::before, .section-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 35%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #A8D8EA, transparent);
+        }
+        .section-divider::before { left: 0; }
+        .section-divider::after { right: 0; }
+        .section-divider span {
+            background: linear-gradient(135deg, #E0F2FE, #DBEAFE);
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #2563EB;
+            font-size: 0.95rem;
+        }
+        @media (max-width: 600px) {
+            .editor-card { padding: 25px 18px; }
+            .editor-title { font-size: 1.5rem; }
+            .section-divider::before, .section-divider::after { width: 25%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-decor">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="sparkle sparkle-1">✨</div>
+        <div class="sparkle sparkle-2">✨</div>
+        <div class="heart heart-1">💙</div>
+        <div class="heart heart-2">💙</div>
+    </div>
+
+    <div class="editor-container">
+        <h1 class="editor-title">💙 Envelope Editor 💙</h1>
+
+        <div class="editor-card">
+            <form id="editor-form">
+                <div class="section-divider"><span>🔐 Password Settings</span></div>
+
+                <div class="form-group">
+                    <label class="form-label" for="envelope-password">
+                        Envelope Password <span class="hint">(for your bestie to open)</span>
+                    </label>
+                    <input type="text" id="envelope-password" class="form-input" placeholder="e.g., bestie2024" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="admin-password">
+                        Admin Password <span class="hint">(to access this editor)</span>
+                    </label>
+                    <input type="text" id="admin-password" class="form-input" placeholder="e.g., admin2024" required>
+                </div>
+
+                <div class="section-divider"><span>💌 Letter Content</span></div>
+
+                <div class="form-group">
+                    <label class="form-label" for="letter-title">Letter Title</label>
+                    <input type="text" id="letter-title" class="form-input" placeholder="To My Bestie 💙" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="letter-body">
+                        Letter Body <span class="hint">(this is your message!)</span>
+                    </label>
+                    <textarea id="letter-body" class="form-textarea" placeholder="Write your heartfelt message here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="letter-signature">Your Signature</label>
+                    <input type="text" id="letter-signature" class="form-input" placeholder="Love, Your Bestie 💙" required>
+                </div>
+
+                <div class="preview-section">
+                    <div class="section-divider"><span>👀 Live Preview</span></div>
+                    <div class="preview-box">
+                        <div class="preview-title" id="preview-title">To My Bestie 💙</div>
+                        <div class="preview-body" id="preview-body">Your message will appear here...</div>
+                        <div class="preview-signature" id="preview-signature">Love, Your Bestie 💙</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success">
+                        <span class="btn-icon">💾</span> Save Changes
+                    </button>
+                    <button type="button" id="reset-btn" class="btn btn-danger">
+                        <span class="btn-icon">🔄</span> Reset to Default
+                    </button>
+                    <a href="index.html" class="btn btn-back">
+                        <span class="btn-icon">🏠</span> Back to Website
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_PASSWORD = 'bestie2024';
+        const DEFAULT_ADMIN_PASSWORD = 'admin2024';
+        const DEFAULT_LETTER = {
+            title: 'To My Dearest Bestie 💙',
+            body: `Happy Happy Birthday to the most amazing person in my life! 🎉
+
+From the moment we met, I knew our friendship was going to be something special. You've been there through thick and thin, laughter and tears, crazy adventures and quiet nights in. 🌟
+
+Thank you for always being you - the kind, funny, incredibly wonderful human being who makes every day brighter just by being in it. You deserve all the love, happiness, and success in the world. 🥰
+
+Here's to another year of creating unforgettable memories together! May all your dreams come true and may this year bring you everything you've been wishing for and more! 💙
+
+Never forget how special you are and how much you mean to me. I'll always be here for you, no matter what. 🫂
+
+Have the most magical birthday ever! You deserve it all! 🎂✨`,
+            signature: 'Forever & Always, Your Bestie 💙'
+        };
+
+        function getStoredData() {
+            try {
+                const stored = localStorage.getItem('birthdayEnvelopeData');
+                if (stored) return JSON.parse(stored);
+            } catch (e) {}
+            return {
+                password: DEFAULT_PASSWORD,
+                adminPassword: DEFAULT_ADMIN_PASSWORD,
+                letter: DEFAULT_LETTER
+            };
+        }
+
+        function saveStoredData(data) {
+            localStorage.setItem('birthdayEnvelopeData', JSON.stringify(data));
+        }
+
+        const data = getStoredData();
+
+        const envelopePwInput = document.getElementById('envelope-password');
+        const adminPwInput = document.getElementById('admin-password');
+        const letterTitleInput = document.getElementById('letter-title');
+        const letterBodyInput = document.getElementById('letter-body');
+        const letterSignatureInput = document.getElementById('letter-signature');
+        const previewTitle = document.getElementById('preview-title');
+        const previewBody = document.getElementById('preview-body');
+        const previewSignature = document.getElementById('preview-signature');
+        const form = document.getElementById('editor-form');
+        const resetBtn = document.getElementById('reset-btn');
+
+        envelopePwInput.value = data.password;
+        adminPwInput.value = data.adminPassword;
+        letterTitleInput.value = data.letter.title;
+        letterBodyInput.value = data.letter.body;
+        letterSignatureInput.value = data.letter.signature;
+
+        function updatePreview() {
+            previewTitle.textContent = letterTitleInput.value || 'Title';
+            previewBody.textContent = letterBodyInput.value || 'Your message will appear here...';
+            previewSignature.textContent = letterSignatureInput.value || 'Your Name';
+        }
+        updatePreview();
+
+        letterTitleInput.addEventListener('input', updatePreview);
+        letterBodyInput.addEventListener('input', updatePreview);
+        letterSignatureInput.addEventListener('input', updatePreview);
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newData = {
+                password: envelopePwInput.value.trim(),
+                adminPassword: adminPwInput.value.trim(),
+                letter: {
+                    title: letterTitleInput.value.trim(),
+                    body: letterBodyInput.value,
+                    signature: letterSignatureInput.value.trim()
+                }
+            };
+            saveStoredData(newData);
+            showToast('✅ Changes saved successfully!');
+        });
+
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset everything to default? This cannot be undone.')) {
+                const defaultData = {
+                    password: DEFAULT_PASSWORD,
+                    adminPassword: DEFAULT_ADMIN_PASSWORD,
+                    letter: DEFAULT_LETTER
+                };
+                saveStoredData(defaultData);
+                envelopePwInput.value = DEFAULT_PASSWORD;
+                adminPwInput.value = DEFAULT_ADMIN_PASSWORD;
+                letterTitleInput.value = DEFAULT_LETTER.title;
+                letterBodyInput.value = DEFAULT_LETTER.body;
+                letterSignatureInput.value = DEFAULT_LETTER.signature;
+                updatePreview();
+                showToast('🔄 Reset to defaults!', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

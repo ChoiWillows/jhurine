@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Bestie! 💙</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-decor">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+        <div class="bubble bubble-5"></div>
+        <div class="sparkle sparkle-1">✨</div>
+        <div class="sparkle sparkle-2">✨</div>
+        <div class="sparkle sparkle-3">✨</div>
+        <div class="heart heart-1">💙</div>
+        <div class="heart heart-2">💙</div>
+        <div class="heart heart-3">💙</div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">
+                <span class="wave">👋</span>
+                <span class="gradient-text">Happy Birthday</span>
+                <span class="heart-icon">💙</span>
+            </h1>
+            <p class="subtitle">To my dearest bestie!</p>
+            <div class="confetti-container">
+                <span class="confetti c1">🎉</span>
+                <span class="confetti c2">🎂</span>
+                <span class="confetti c3">🎈</span>
+                <span class="confetti c4">🎁</span>
+                <span class="confetti c5">🎊</span>
+                <span class="confetti c6">⭐</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div id="envelope-section" class="envelope-section">
+                <div class="envelope-wrapper">
+                    <div id="envelope" class="envelope">
+                        <div class="envelope-flap"></div>
+                        <div class="envelope-body"></div>
+                        <div class="envelope-seal">
+                            <span class="seal-heart">💙</span>
+                        </div>
+                        <div id="letter" class="letter">
+                            <div class="letter-content">
+                                <div id="letter-title" class="letter-title">To My Bestie 💌</div>
+                                <div id="letter-body" class="letter-body"></div>
+                                <div class="letter-footer">
+                                    <p>With all my love, 💙</p>
+                                    <p id="letter-signature">Your Bestie</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="password-area" class="password-area">
+                    <div class="password-card">
+                        <p class="password-hint">🔒 This envelope is sealed with love!</p>
+                        <p class="password-subhint">Enter your special password to open it 💕</p>
+                        <div class="input-group">
+                            <input 
+                                type="password" 
+                                id="password-input" 
+                                placeholder="Enter the secret password..."
+                                autocomplete="off"
+                            >
+                            <button id="toggle-password" class="toggle-password-btn" type="button">
+                                👁️
+                            </button>
+                        </div>
+                        <div id="error-msg" class="error-msg hidden">
+                            😅 Oops! Wrong password. Try again!
+                        </div>
+                        <div class="button-group">
+                            <button id="open-btn" class="btn btn-primary">
+                                <span class="btn-icon">💝</span> Open Envelope
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="after-open" class="after-open hidden">
+                <div class="floating-hearts">
+                    <span>💙</span><span>💜</span><span>💙</span><span>🦋</span><span>💙</span>
+                </div>
+                <div class="celebration-text">
+                    <h2 class="celebrate-title">🎂 Yay! You opened it! 🎂</h2>
+                    <p class="celebrate-subtitle">Hope you have the happiest day ever! ✨</p>
+                </div>
+                <div class="action-buttons">
+                    <button id="replay-btn" class="btn btn-secondary">
+                        <span class="btn-icon">🔄</span> Replay
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Made with 💙 for you, always</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
