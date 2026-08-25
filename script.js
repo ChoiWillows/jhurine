@@ -28,9 +28,9 @@ HAPPY BIRTHDAY JM!!!!!!!! MORE BIRTHDAYS TO COMEEEEE!!!! <3
     signature: 'Marth Hale 💙'
 };
 
-const WORMHOLE_DURATION_MS  = 5200;
-const LINE_REVEAL_DELAY_MS  = 1100;
-const EMPHASIS_LINE_DELAY_MS = 1600;
+const WORMHOLE_DURATION_MS  = 5000;
+const LINE_REVEAL_DELAY_MS  = 1000;
+const EMPHASIS_LINE_DELAY_MS = 1000;
 
 const MUSIC_URL = 'Rob%20Deniel%20-%20Star%20Song%20(Official%20Lyric%20Video).mp3';
 const MUSIC_VOLUME = 1.00;
