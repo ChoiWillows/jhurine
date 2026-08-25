@@ -1,14 +1,14 @@
-const DEFAULT_PASSWORD     = '082510';        // 🔐 Envelope password
-const DEFAULT_ADMIN_PASSWORD = 'admin2024';    // 🔑 Editor password
+const DEFAULT_PASSWORD     = '082510';
+const DEFAULT_ADMIN_PASSWORD = 'admin2024';
 
 const DEFAULT_LETTER = {
-    title: 'To JM💙',                         // 💌 Top header of the letter
+    title: 'To JM💙',
     body:
 `Happy Happy Birthday brooooo! 🎉
 
 Noon talaga akala ko 'di kita magiging close hwhahhahaha pero noon lang pala talaga 'yon. It's kinda weird but yeah sobrang pinahanga mo 'ko sa galing mong makisama sa Wave to Earth.
 
-Sa totoo lang sobrang thankful ako na nakilala kita at naging close tayo. You are one of the most amazing people I've ever met, and I feel so lucky to have you in my life. Your kindness, humor, an[...]
+Sa totoo lang sobrang thankful ako na nakilala kita at naging close tayo. You are one of the most amazing people I've ever met, and I feel so lucky to have you in my life. Your kindness, humor, and positivity always reminds me to pursue what i wanted.
 
 The moment we have that conversation that last for 7 hours, doon kita mas nakilala. Sobrang na-amaze ako sa'yo n'on kasi ang daldal mo din pala, akala ko nonchalant ka forever ehh.
 
@@ -25,17 +25,15 @@ Joke lang, pero ang pinaka-wish ko sa'yo ay sana maabot mo na 'yung ninanais mo 
 HAPPY BIRTHDAY JM!!!!!!!! MORE BIRTHDAYS TO COMEEEEE!!!! <3
 
 (blue talaga 'yung theme kasi alam kong blue 'yung favorite color mo)`,
-    signature: 'Marth Hale 💙'                 // ✍️ Your signature
+    signature: 'Marth Hale 💙'
 };
 
-/* 🎚️ Timing — tweak these if you want the reveal to go faster/slower */
-const WORMHOLE_DURATION_MS  = 5200;  // how long the portal shows before the envelope stage (5.2s)
-const LINE_REVEAL_DELAY_MS  = 1100;  // ms between each line appearing (~1.1s)
-const EMPHASIS_LINE_DELAY_MS = 1600; // delay added for empty/paragraph-break lines
+const WORMHOLE_DURATION_MS  = 5200;
+const LINE_REVEAL_DELAY_MS  = 1100;
+const EMPHASIS_LINE_DELAY_MS = 1600;
 
-/* 🎵 Background music — leave URL as '' for NO music */
-const MUSIC_URL = 'https://raw.githubusercontent.com/ChoiWillows/jhurine/main/Rob%20Deniel%20-%20Star%20Song%20(Official%20Lyric%20Video).mp3';
-const MUSIC_VOLUME = 0.45; // 0.0 (mute) → 1.0 (loud)
+const MUSIC_URL = 'Rob%20Deniel%20-%20Star%20Song%20(Official%20Lyric%20Video).mp3';
+const MUSIC_VOLUME = 1.00;
 
 /* =====================================================================
    🛑 STOP — DO NOT EDIT BELOW THIS LINE UNLESS YOU KNOW JAVASCRIPT 🛑
