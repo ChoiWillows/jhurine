@@ -6,6 +6,7 @@
     <title>Envelope Editor 💙</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        body { overflow-x: hidden; }
         .editor-container { max-width: 820px; margin: 0 auto; padding: 30px 20px; }
         .editor-title {
             font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 24px;
@@ -26,6 +27,9 @@
             padding: 32px;
             box-shadow: 0 20px 50px rgba(30, 64, 175, 0.15);
             border: 2px solid rgba(168, 216, 234, 0.5);
+            max-height: 85vh;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
         .divider { text-align: center; margin: 32px 0 22px; position: relative; }
         .divider::before, .divider::after {
@@ -46,6 +50,7 @@
             border: 2px solid #B9E0FF; border-radius: 14px;
             background: linear-gradient(135deg, #F0F9FF 0%, #FFFFFF 100%);
             transition: all 0.3s ease; color: #1E40AF; font-family: inherit; outline: none;
+            box-sizing: border-box;
         }
         .fi:focus, .fta:focus {
             border-color: #4A90E2; background: #fff;
@@ -108,7 +113,7 @@
         @keyframes slideIn { from { transform: translateX(400px); opacity: 0;} to { transform: translateX(0); opacity: 1; } }
         .hidden { display: none !important; }
         @media (max-width: 600px) {
-            .editor-card { padding: 22px 16px; }
+            .editor-card { padding: 22px 16px; max-height: 90vh; }
             .editor-title { font-size: 1.5rem; }
             .divider::before, .divider::after { width: 22%; }
             .code { padding-right: 22px; padding-top: 58px; }
@@ -182,7 +187,7 @@
             </div>
             <div class="fg">
                 <label class="fl" for="musicUrl">Background Music URL <span class="hint">(mp3/ogg, or leave empty for none)</span></label>
-                <input type="text" id="musicUrl" class="fi" value="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=soft-piano-100-bpm-121529.mp3" placeholder="leave blank for no music">
+                <input type="text" id="musicUrl" class="fi" placeholder="https://example.com/music.mp3">
             </div>
             <div class="fg">
                 <label class="fl" for="vol">Music Volume <span class="hint">(0 = muted, 1 = loudest)</span></label>
@@ -233,12 +238,12 @@
             password: '082510',
             adminPassword: 'admin2024',
             title: 'To JM💙',
-            body: "Happy Happy Birthday brooooo! 🎉\n\nNoon talaga akala ko 'di kita magiging close hwhahhahaha pero noon lang pala talaga 'yon. It's kinda weird but yeah sobrang pinahanga mo 'ko sa galing mong makisama sa Wave to Earth.\n\nSa totoo lang sobrang thankful ako na nakilala kita at naging close tayo. You are one of the most amazing people I've ever met, and I feel so lucky to have you in my life. Your kindness, humor, and positivity always reminds me to persue what i wanted.\n\nThe moment we have that conversation that last for 7 hours, doon kita mas nakilala. Sobrang na-amaze ako sa'yo n'on kasi ang daldal mo din pala, akala ko nonchalant ka forever ehh. \n\nGumawa ako ng website yes, it took me days to make it but I hope you like it. I just want to make your birthday special and memorable.\n\nActually, kaya mo talaga 'tong ma-access sa lifetime mo unless i-delete ko. Hawak ko 'yung website kaya safe naman ito hwhahahaa. \n\nAs long as alam mo 'yung password, kaya mo 'tong balik-balikan kasi open 'to 24/7 HAHAHHAHAAHAHHA.\n\nAyun langgg, sana happy ka sa birthday mo broo kasi ako sobrang happy for you na nagagawa mo mga gusto mo. At sana mahanap mo din 'yung tamang tao para sa'yo.\n\nJoke lang, pero ang pinaka-wish ko sa'yo ay sana maabot mo na 'yung ninanais mo na with high honors at makapasa sa upcat next year! \n\nHAPPY BIRTHDAY JM!!!!!!!! MORE BIRTHDAYS TO COMEEEEE!!!! <3\n\n(blue talaga 'yung theme kasi alam kong blue 'yung favorite color mo)",
+            body: "Happy Happy Birthday brooooo! 🎉\n\nNoon talaga akala ko 'di kita magiging close hwhahhahaha pero noon lang pala talaga 'yon. It's kinda weird but yeah sobrang pinahanga mo 'ko sa galing mong makisama sa Wave to Earth.\n\nSa totoo lang sobrang thankful ako na nakilala kita at naging close tayo. You are one of the most amazing people I've ever met, and I feel so lucky to have you in my life. Your kindness, humor, an[...]\n\nThe moment we have that conversation that last for 7 hours, doon kita mas nakilala. Sobrang na-amaze ako sa'yo n'on kasi ang daldal mo din pala, akala ko nonchalant ka forever ehh.\n\nGumawa ako ng website yes, it took me days to make it but I hope you like it. I just want to make your birthday special and memorable.\n\nActually, kaya mo talaga 'tong ma-access sa lifetime mo unless i-delete ko. Hawak ko 'yung website kaya safe naman ito hwhahahaa.\n\nAs long as alam mo 'yung password, kaya mo 'tong balik-balikan kasi open 'to 24/7 HAHAHHAHAAHAHHA.\n\nAyun langgg, sana happy ka sa birthday mo broo kasi ako sobrang happy for you na nagagawa mo mga gusto mo. At sana mahanap mo din 'yung tamang tao para sa'yo.\n\nJoke lang, pero ang pinaka-wish ko sa'yo ay sana maabot mo na 'yung ninanais mo na with high honors at makapasa sa upcat next year!\n\nHAPPY BIRTHDAY JM!!!!!!!! MORE BIRTHDAYS TO COMEEEEE!!!! <3\n\n(blue talaga 'yung theme kasi alam kong blue 'yung favorite color mo)",
             signature: 'Marth Hale 💙',
             wormMs: 5200,
             lineMs: 1100,
             gapMs: 1600,
-            musicUrl: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=soft-piano-100-bpm-121529.mp3',
+            musicUrl: 'Rob%20Deniel%20-%20Star%20Song%20(Official%20Lyric%20Video).mp3',
             vol: 0.45
         };
 
@@ -251,6 +256,7 @@
         const saveBtn = $('saveBtn'), resetBtn = $('resetBtn');
 
         b.value = DEFAULT.body;
+        musicUrl.value = DEFAULT.musicUrl;
 
         function esc(str) {
             return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
