@@ -18,6 +18,8 @@ Actually, kaya mo talaga 'tong ma-access sa lifetime mo unless i-delete ko. Hawa
 
 As long as alam mo 'yung password, kaya mo 'tong balik-balikan kasi open 'to 24/7 HAHAHHAHAAHAHHA.
 
+Sorry late na din ako nagsend sayo kasi nakatulog ako kagabi habang ineedit 'yung site. :<
+
 Ayun langgg, sana happy ka sa birthday mo broo kasi ako sobrang happy for you na nagagawa mo mga gusto mo. At sana mahanap mo din 'yung tamang tao para sa'yo.
 
 Joke lang, pero ang pinaka-wish ko sa'yo ay sana maabot mo na 'yung ninanais mo na with high honors at makapasa sa upcat next year!
